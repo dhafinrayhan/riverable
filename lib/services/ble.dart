@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'settings.dart';
@@ -38,4 +41,39 @@ DiscoveredDevice device(DeviceRef ref, String id) {
   return ref.watch(
     discoveredDevicesProvider.select((value) => value.value![id]!),
   );
+}
+
+@riverpod
+class CurrentDeviceConnectionState extends _$CurrentDeviceConnectionState {
+  StreamSubscription<ConnectionStateUpdate>? connectionStreamSubscription;
+  KeepAliveLink? link;
+
+  @override
+  Stream<DeviceConnectionState> build(String id) async* {
+    yield DeviceConnectionState.disconnected;
+
+    final connectedDeviceStream = ref.watch(bleProvider).connectedDeviceStream;
+    await for (final event in connectedDeviceStream) {
+      if (event.deviceId == id) {
+        final connectionState = event.connectionState;
+        yield connectionState;
+
+        if (connectionState == DeviceConnectionState.disconnected) {
+          disconnect();
+        }
+      }
+    }
+  }
+
+  void connect() {
+    link ??= ref.keepAlive();
+    connectionStreamSubscription ??=
+        ref.read(bleProvider).connectToDevice(id: id).listen((_) {});
+  }
+
+  Future<void> disconnect() async {
+    await connectionStreamSubscription?.cancel();
+    connectionStreamSubscription = null;
+    link?.close();
+  }
 }
