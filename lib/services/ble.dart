@@ -51,8 +51,8 @@ Stream<ConnectionStateUpdate> latestConnectionStateUpdate(
 
 @riverpod
 class CurrentDeviceConnectionState extends _$CurrentDeviceConnectionState {
-  StreamSubscription<ConnectionStateUpdate>? connectionStreamSubscription;
-  KeepAliveLink? link;
+  StreamSubscription<ConnectionStateUpdate>? _connectionStreamSubscription;
+  KeepAliveLink? _link;
 
   @override
   Stream<DeviceConnectionState> build(String id) async* {
@@ -72,14 +72,14 @@ class CurrentDeviceConnectionState extends _$CurrentDeviceConnectionState {
   }
 
   void connect() {
-    link ??= ref.keepAlive();
-    connectionStreamSubscription ??=
+    _link ??= ref.keepAlive();
+    _connectionStreamSubscription ??=
         ref.read(bleProvider).connectToDevice(id: id).listen((_) {});
   }
 
   Future<void> disconnect() async {
-    await connectionStreamSubscription?.cancel();
-    connectionStreamSubscription = null;
-    link?.close();
+    await _connectionStreamSubscription?.cancel();
+    _connectionStreamSubscription = null;
+    _link?.close();
   }
 }
