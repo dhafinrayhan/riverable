@@ -44,6 +44,12 @@ DiscoveredDevice device(DeviceRef ref, String id) {
 }
 
 @riverpod
+Stream<ConnectionStateUpdate> latestConnectionStateUpdate(
+  LatestConnectionStateUpdateRef ref,
+) =>
+    ref.watch(bleProvider).connectedDeviceStream.distinct();
+
+@riverpod
 class CurrentDeviceConnectionState extends _$CurrentDeviceConnectionState {
   StreamSubscription<ConnectionStateUpdate>? connectionStreamSubscription;
   KeepAliveLink? link;
