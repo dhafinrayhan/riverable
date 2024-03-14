@@ -1,4 +1,4 @@
-# riverable
+# Riverable
 
 An example Flutter project that integrates Riverpod and flutter_reactive_ble.
 
