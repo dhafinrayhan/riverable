@@ -10,9 +10,7 @@ class DeviceScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final device = ref.watch(
-      discoveredDevicesProvider.select((value) => value.value![id]!),
-    );
+    final device = ref.watch(deviceProvider(id));
 
     final records = <({String label, String text})>[
       (label: 'ID', text: device.id),

@@ -32,3 +32,10 @@ Stream<Map<String, DiscoveredDevice>> nearbyDevices(
 
   yield {...devices}..removeWhere((_, device) => device.rssi < threshold);
 }
+
+@riverpod
+DiscoveredDevice device(DeviceRef ref, String id) {
+  return ref.watch(
+    discoveredDevicesProvider.select((value) => value.value![id]!),
+  );
+}
