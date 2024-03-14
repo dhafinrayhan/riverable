@@ -7,9 +7,9 @@ part 'ble.g.dart';
 FlutterReactiveBle ble(BleRef ref) => FlutterReactiveBle();
 
 @Riverpod(keepAlive: true)
-Stream<List<DiscoveredDevice>> discoveredDevices(
+Stream<Map<String, DiscoveredDevice>> discoveredDevices(
     DiscoveredDevicesRef ref) async* {
-  final devices = <DiscoveredDevice>[];
+  final devices = <String, DiscoveredDevice>{};
   yield devices;
 
   final deviceStream = ref
@@ -17,9 +17,7 @@ Stream<List<DiscoveredDevice>> discoveredDevices(
       .scanForDevices(withServices: [], scanMode: ScanMode.lowLatency);
 
   await for (final device in deviceStream) {
-    if (devices.every((d) => d.id != device.id)) {
-      devices.add(device);
-      yield devices;
-    }
+    devices[device.id] = device;
+    yield devices;
   }
 }

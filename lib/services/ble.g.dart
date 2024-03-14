@@ -20,12 +20,12 @@ final bleProvider = Provider<FlutterReactiveBle>.internal(
 );
 
 typedef BleRef = ProviderRef<FlutterReactiveBle>;
-String _$discoveredDevicesHash() => r'ee6804602fcf1388228d5ae9f3420d17b2a06262';
+String _$discoveredDevicesHash() => r'0594c260f6b1168d74ca44af4cdc378fd0f48b83';
 
 /// See also [discoveredDevices].
 @ProviderFor(discoveredDevices)
 final discoveredDevicesProvider =
-    StreamProvider<List<DiscoveredDevice>>.internal(
+    StreamProvider<Map<String, DiscoveredDevice>>.internal(
   discoveredDevices,
   name: r'discoveredDevicesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -35,6 +35,6 @@ final discoveredDevicesProvider =
   allTransitiveDependencies: null,
 );
 
-typedef DiscoveredDevicesRef = StreamProviderRef<List<DiscoveredDevice>>;
+typedef DiscoveredDevicesRef = StreamProviderRef<Map<String, DiscoveredDevice>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
