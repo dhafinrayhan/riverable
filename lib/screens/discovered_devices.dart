@@ -11,7 +11,7 @@ class DiscoveredDevicesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final devices =
-        ref.watch(discoveredDevicesProvider).value?.values.toList() ?? [];
+        ref.watch(nearbyDevicesProvider).value?.values.toList() ?? [];
 
     return Scaffold(
       appBar: AppBar(
