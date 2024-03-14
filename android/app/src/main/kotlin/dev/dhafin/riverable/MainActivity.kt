@@ -1,4 +1,4 @@
-package com.example.riverable
+package dev.dhafin.riverable
 
 import io.flutter.embedding.android.FlutterActivity
 
