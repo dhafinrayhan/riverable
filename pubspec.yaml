@@ -11,7 +11,10 @@ dependencies:
     sdk: flutter
   flutter_hooks: ^0.20.5
   flutter_reactive_ble: ^5.3.1
+  freezed_annotation: ^2.4.1
+  go_router: ^13.2.0
   hooks_riverpod: ^2.5.1
+  json_annotation: ^4.8.1
   riverpod_annotation: ^2.3.5
 
 dev_dependencies:
@@ -20,7 +23,9 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
+  freezed: ^2.4.7
   husky: ^0.1.7
+  json_serializable: ^6.7.1
   lint_staged: ^0.5.1
   riverpod_generator: ^2.4.0
   riverpod_lint: ^2.3.10
