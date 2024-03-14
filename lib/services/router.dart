@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../screens/discovered_device.dart';
-import '../screens/discovered_devices.dart';
+import '../screens/device.dart';
+import '../screens/devices.dart';
 import '../screens/settings.dart';
 import '../widgets/models/nav_bar_item.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
@@ -14,8 +14,8 @@ part 'router.g.dart';
 GoRouter router(RouterRef ref) {
   final navBarItems = [
     NavBarItem(
-      path: '/discovered-devices',
-      widget: const DiscoveredDevicesScreen(),
+      path: '/devices',
+      widget: const DevicesScreen(),
       icon: Icons.bluetooth,
       label: 'Devices',
       routes: [
@@ -23,7 +23,7 @@ GoRouter router(RouterRef ref) {
           path: ':id',
           builder: (_, state) {
             final id = state.pathParameters['id']!;
-            return DiscoveredDeviceScreen(id);
+            return DeviceScreen(id);
           },
         ),
       ],

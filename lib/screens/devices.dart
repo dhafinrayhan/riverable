@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../services/ble.dart';
 
-class DiscoveredDevicesScreen extends ConsumerWidget {
-  const DiscoveredDevicesScreen({super.key});
+class DevicesScreen extends ConsumerWidget {
+  const DevicesScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +15,7 @@ class DiscoveredDevicesScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discovered Devices'),
+        title: const Text('Devices'),
       ),
       body: ListView.builder(
         itemCount: devices.length,
@@ -35,9 +35,9 @@ class _DeviceListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => context.go('/discovered-devices/${device.id}'),
+      onTap: () => context.go('/devices/${device.id}'),
       title: Text(device.id),
-      subtitle: Text(device.name),
+      subtitle: device.name.isNotEmpty ? Text(device.name) : null,
       trailing: Text(device.rssi.toString()),
     );
   }

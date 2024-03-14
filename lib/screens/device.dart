@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../services/ble.dart';
 
-class DiscoveredDeviceScreen extends ConsumerWidget {
-  const DiscoveredDeviceScreen(this.id, {super.key});
+class DeviceScreen extends ConsumerWidget {
+  const DeviceScreen(this.id, {super.key});
 
   final String id;
 
@@ -22,7 +22,7 @@ class DiscoveredDeviceScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discovered Device'),
+        title: const Text('Device'),
       ),
       body: ListView.builder(
         itemCount: records.length,
