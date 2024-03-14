@@ -13,6 +13,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  husky: ^0.1.7
+  lint_staged: ^0.5.1
 
 flutter:
   uses-material-design: true
+
+lint_staged:
+  "lib/**.dart": dart format --fix
