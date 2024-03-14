@@ -34,32 +34,58 @@ class DeviceScreen extends ConsumerWidget {
               subtitle: Text(record.text),
             ),
           const Divider(),
-          if (connectionState != null)
-            ListTile(
-              onTap: () {
-                switch (connectionState) {
-                  case DeviceConnectionState.connected:
-                    ref
-                        .read(CurrentDeviceConnectionStateProvider(id).notifier)
-                        .disconnect();
-                  case DeviceConnectionState.disconnected:
-                    ref
-                        .read(CurrentDeviceConnectionStateProvider(id).notifier)
-                        .connect();
-                  default:
-                }
-              },
-              leading: const Icon(Icons.sensors),
-              title: Text(connectionState.label),
-              subtitle: Text(switch (connectionState) {
-                DeviceConnectionState.connecting => '',
-                DeviceConnectionState.connected => 'Tap to disconnect',
-                DeviceConnectionState.disconnecting => '',
-                DeviceConnectionState.disconnected => 'Tap to connect',
-              }),
-            ),
+          if (connectionState != null) _ConnectionListTile(id),
         ],
       ),
+    );
+  }
+}
+
+class _ConnectionListTile extends ConsumerWidget {
+  const _ConnectionListTile(this.id);
+
+  final String id;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final connectionState =
+        ref.watch(currentDeviceConnectionStateProvider(id)).requireValue;
+
+    void connect() {
+      ref.read(currentDeviceConnectionStateProvider(id).notifier).connect();
+    }
+
+    void disconnect() {
+      ref.read(currentDeviceConnectionStateProvider(id).notifier).disconnect();
+    }
+
+    GestureTapCallback? onTap;
+    Icon icon;
+    String subtitle;
+
+    switch (connectionState) {
+      case DeviceConnectionState.connected:
+        onTap = disconnect;
+        icon = Icon(
+          Icons.sensors,
+          color: Theme.of(context).colorScheme.primary,
+        );
+        subtitle = 'Tap to disconnect';
+      case DeviceConnectionState.disconnected:
+        onTap = connect;
+        icon = const Icon(Icons.sensors_off);
+        subtitle = 'Tap to connect';
+      default:
+        onTap = null;
+        icon = const Icon(Icons.sensors);
+        subtitle = '';
+    }
+
+    return ListTile(
+      onTap: onTap,
+      leading: icon,
+      title: Text(connectionState.label),
+      subtitle: Text(subtitle),
     );
   }
 }

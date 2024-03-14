@@ -39,7 +39,7 @@ Stream<Map<String, DiscoveredDevice>> nearbyDevices(
 @riverpod
 DiscoveredDevice device(DeviceRef ref, String id) {
   return ref.watch(
-    discoveredDevicesProvider.select((value) => value.value![id]!),
+    discoveredDevicesProvider.select((value) => value.requireValue[id]!),
   );
 }
 
