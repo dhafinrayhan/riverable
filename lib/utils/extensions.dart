@@ -8,6 +8,15 @@ extension DeviceConnectionStateExtension on DeviceConnectionState {
         DeviceConnectionState.disconnecting => 'Disconnecting',
         DeviceConnectionState.disconnected => 'Disconnected',
       };
+
+  Icon iconOf(BuildContext context) => switch (this) {
+        DeviceConnectionState.connected => Icon(
+            Icons.sensors,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        DeviceConnectionState.disconnected => const Icon(Icons.sensors_off),
+        _ => const Icon(Icons.sensors),
+      };
 }
 
 extension BuildContextExtension on BuildContext {

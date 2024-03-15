@@ -61,6 +61,7 @@ class _DeviceListTile extends ConsumerWidget {
 
     return ListTile(
       onTap: () => context.go('/devices/${device.id}'),
+      leading: device.connectionState.iconOf(context),
       title: Text(device.id),
       subtitle: device.name.isNotEmpty ? Text(device.name) : null,
       trailing: Text(device.rssi.toString()),

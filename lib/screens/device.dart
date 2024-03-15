@@ -56,30 +56,23 @@ class _ConnectionListTile extends ConsumerWidget {
     }
 
     GestureTapCallback? onTap;
-    Icon icon;
     String subtitle;
 
     switch (device.connectionState) {
       case DeviceConnectionState.connected:
         onTap = disconnect;
-        icon = Icon(
-          Icons.sensors,
-          color: Theme.of(context).colorScheme.primary,
-        );
         subtitle = 'Tap to disconnect';
       case DeviceConnectionState.disconnected:
         onTap = connect;
-        icon = const Icon(Icons.sensors_off);
         subtitle = 'Tap to connect';
       default:
         onTap = null;
-        icon = const Icon(Icons.sensors);
         subtitle = '';
     }
 
     return ListTile(
       onTap: onTap,
-      leading: icon,
+      leading: device.connectionState.iconOf(context),
       title: Text(device.connectionState.label),
       subtitle: Text(subtitle),
     );
