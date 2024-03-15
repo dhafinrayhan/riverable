@@ -66,7 +66,7 @@ class DeviceConnection extends _$DeviceConnection {
   StreamSubscription<ConnectionStateUpdate>? build(String id) => null;
 
   void connect() {
-    state ??= ref.read(bleProvider).connectToDevice(id: id).listen((_) {});
+    state = ref.read(bleProvider).connectToDevice(id: id).listen((_) {});
   }
 
   Future<void> disconnect() async {
