@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../services/ble.dart';
+import '../services/device_state.dart';
 import '../utils/extensions.dart';
 
 class DevicesScreen extends ConsumerWidget {
@@ -15,10 +16,10 @@ class DevicesScreen extends ConsumerWidget {
     final devices =
         ref.watch(nearbyDevicesProvider).value?.values.toList() ?? [];
 
-    ref.listen(latestConnectionStateUpdateProvider, (_, event) {
-      if (event.hasValue) {
+    ref.listen(latestConnectionStateUpdateProvider, (_, connectionStateUpdate) {
+      if (connectionStateUpdate.hasValue) {
         final ConnectionStateUpdate(:deviceId, :connectionState) =
-            event.requireValue;
+            connectionStateUpdate.requireValue;
         switch (connectionState) {
           case DeviceConnectionState.connected:
           case DeviceConnectionState.disconnected:
@@ -41,20 +42,23 @@ class DevicesScreen extends ConsumerWidget {
       body: ListView.builder(
         itemCount: devices.length,
         itemBuilder: (_, index) {
-          return _DeviceListTile(devices[index]);
+          final id = devices[index].id;
+          return _DeviceListTile(id);
         },
       ),
     );
   }
 }
 
-class _DeviceListTile extends StatelessWidget {
-  const _DeviceListTile(this.device);
+class _DeviceListTile extends ConsumerWidget {
+  const _DeviceListTile(this.id);
 
-  final DiscoveredDevice device;
+  final String id;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final device = ref.watch(DeviceProvider(id));
+
     return ListTile(
       onTap: () => context.go('/devices/${device.id}'),
       title: Text(device.id),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../services/ble.dart';
+import '../models/device_state.dart';
+import '../services/device_state.dart';
 import '../utils/extensions.dart';
 
 class DeviceScreen extends ConsumerWidget {
@@ -13,10 +14,8 @@ class DeviceScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final device = ref.watch(deviceProvider(id));
-    final connectionState =
-        ref.watch(currentDeviceConnectionStateProvider(id)).value;
 
-    final records = <({String label, String text})>[
+    final records = [
       (label: 'ID', text: device.id),
       (label: 'Name', text: device.name),
       (label: 'RSSI (dBm)', text: device.rssi.toString()),
@@ -34,7 +33,7 @@ class DeviceScreen extends ConsumerWidget {
               subtitle: Text(record.text),
             ),
           const Divider(),
-          if (connectionState != null) _ConnectionListTile(id),
+          _ConnectionListTile(device),
         ],
       ),
     );
@@ -42,28 +41,25 @@ class DeviceScreen extends ConsumerWidget {
 }
 
 class _ConnectionListTile extends ConsumerWidget {
-  const _ConnectionListTile(this.id);
+  const _ConnectionListTile(this.device);
 
-  final String id;
+  final DeviceState device;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final connectionState =
-        ref.watch(currentDeviceConnectionStateProvider(id)).requireValue;
-
     void connect() {
-      ref.read(currentDeviceConnectionStateProvider(id).notifier).connect();
+      ref.read(deviceProvider(device.id).notifier).connect();
     }
 
     void disconnect() {
-      ref.read(currentDeviceConnectionStateProvider(id).notifier).disconnect();
+      ref.read(deviceProvider(device.id).notifier).disconnect();
     }
 
     GestureTapCallback? onTap;
     Icon icon;
     String subtitle;
 
-    switch (connectionState) {
+    switch (device.connectionState) {
       case DeviceConnectionState.connected:
         onTap = disconnect;
         icon = Icon(
@@ -84,7 +80,7 @@ class _ConnectionListTile extends ConsumerWidget {
     return ListTile(
       onTap: onTap,
       leading: icon,
-      title: Text(connectionState.label),
+      title: Text(device.connectionState.label),
       subtitle: Text(subtitle),
     );
   }
