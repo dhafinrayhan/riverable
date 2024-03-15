@@ -20,8 +20,13 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'Riverable',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorSchemeSeed: Colors.blue,
         useMaterial3: true,
+      ),
+      darkTheme: ThemeData(
+        colorSchemeSeed: Colors.blue,
+        useMaterial3: true,
+        brightness: Brightness.dark,
       ),
       routerConfig: router,
     );
