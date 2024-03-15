@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'settings.dart';
+import '../settings.dart';
 
-part 'ble.g.dart';
+part 'devices.g.dart';
 
 /// Exposes a singleton of the BLE service.
 @Riverpod(keepAlive: true)

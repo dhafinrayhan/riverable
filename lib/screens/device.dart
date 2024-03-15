@@ -3,7 +3,7 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../models/device_state.dart';
-import '../services/device_state.dart';
+import '../services/ble/device.dart';
 import '../utils/extensions.dart';
 
 class DeviceScreen extends ConsumerWidget {

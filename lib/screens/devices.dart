@@ -4,8 +4,8 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../services/ble.dart';
-import '../services/device_state.dart';
+import '../services/ble/device.dart';
+import '../services/ble/devices.dart';
 import '../utils/extensions.dart';
 
 class DevicesScreen extends ConsumerWidget {

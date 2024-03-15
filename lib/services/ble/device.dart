@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../models/device_state.dart';
-import 'ble.dart';
+import '../../models/device_state.dart';
+import 'devices.dart';
 
-part 'device_state.g.dart';
+part 'device.g.dart';
 
 /// A notifier that exposes a specific device state and manage BLE operations
 /// related to the device.
