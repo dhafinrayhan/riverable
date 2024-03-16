@@ -30,12 +30,19 @@ Stream<Map<String, DiscoveredDevice>> discoveredDevices(
 
 /// Exposes discovered devices within the RSSI threshold.
 @Riverpod(keepAlive: true)
-Stream<Map<String, DiscoveredDevice>> nearbyDevices(
-    NearbyDevicesRef ref) async* {
+Stream<List<DiscoveredDevice>> nearbyDevices(NearbyDevicesRef ref) async* {
+  final sortBasedOnRssi = ref.watch(sortBasedOnRssiProvider);
+  // final connectedDevicesOnTop = ref.watch(connectedDevicesOnTopProvider);
   final threshold = ref.watch(rssiThresholdProvider);
-  final devices = await ref.watch(discoveredDevicesProvider.future);
+  final devices = (await ref.watch(discoveredDevicesProvider.future)).values;
 
-  yield {...devices}..removeWhere((_, device) => device.rssi < threshold);
+  final nearbyDevices =
+      devices.where((device) => device.rssi >= threshold).toList();
+  if (sortBasedOnRssi) {
+    nearbyDevices.sort((a, b) => b.rssi.compareTo(a.rssi));
+  }
+
+  yield nearbyDevices;
 }
 
 @riverpod

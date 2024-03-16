@@ -16,6 +16,9 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: const [
+          _SortBasedOnRssi(),
+          _ConnectedDevicesOnTop(),
+          Divider(),
           _RssiThresholdListTile(),
           Divider(),
           _ThemeModeListTile(),
@@ -47,6 +50,40 @@ class _RssiThresholdListTile extends ConsumerWidget {
         },
       ),
       trailing: Text(threshold.toStringAsFixed(0)),
+    );
+  }
+}
+
+class _SortBasedOnRssi extends ConsumerWidget {
+  const _SortBasedOnRssi();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isChecked = ref.watch(sortBasedOnRssiProvider);
+
+    return CheckboxListTile(
+      value: isChecked,
+      onChanged: (value) =>
+          ref.read(sortBasedOnRssiProvider.notifier).set(value!),
+      title: const Text('Sort devices based on RSSI strength'),
+    );
+  }
+}
+
+class _ConnectedDevicesOnTop extends ConsumerWidget {
+  const _ConnectedDevicesOnTop();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isChecked = ref.watch(connectedDevicesOnTopProvider);
+
+    return CheckboxListTile(
+      enabled: false,
+      subtitle: const Text('(Feature not available yet)'),
+      value: isChecked,
+      onChanged: (value) =>
+          ref.read(connectedDevicesOnTopProvider.notifier).set(value!),
+      title: const Text('Show connected devices on top of the list'),
     );
   }
 }
