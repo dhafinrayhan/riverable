@@ -13,6 +13,12 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
+        actions: [
+          IconButton(
+            onPressed: () => context.showAppLicensePage(),
+            icon: const Icon(Icons.info_outline),
+          ),
+        ],
       ),
       body: ListView(
         children: const [
