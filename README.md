@@ -1,6 +1,6 @@
 # Riverable
 
-An example Flutter project that integrates Riverpod and flutter_reactive_ble.
+An example Flutter project that integrates [Riverpod](https://pub.dev/packages/riverpod) with [flutter_reactive_ble](https://pub.dev/packages/flutter_reactive_ble).
 
 ## Setup
 1. Run `flutter pub get` to get dependencies.
