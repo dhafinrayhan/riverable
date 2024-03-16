@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         children: const [
           _SortBasedOnRssi(),
-          // _ConnectedDevicesOnTop(),
+          _ConnectedDevicesOnTop(),
           Divider(),
           _RssiThresholdListTile(),
           Divider(),
@@ -78,6 +78,8 @@ class _ConnectedDevicesOnTop extends ConsumerWidget {
     final bool isChecked = ref.watch(connectedDevicesOnTopProvider);
 
     return CheckboxListTile(
+      enabled: false,
+      subtitle: const Text('(Feature not available yet)'),
       value: isChecked,
       onChanged: (value) =>
           ref.read(connectedDevicesOnTopProvider.notifier).set(value!),
