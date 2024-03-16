@@ -20,6 +20,14 @@ extension DeviceConnectionStateExtension on DeviceConnectionState {
       };
 }
 
+extension ConnectableExtension on Connectable {
+  String get label => switch (this) {
+        Connectable.unknown => 'Unknown',
+        Connectable.unavailable => 'Unavailable',
+        Connectable.available => 'Available',
+      };
+}
+
 extension BuildContextExtension on BuildContext {
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
 

@@ -26,8 +26,8 @@ class DevicesScreen extends ConsumerWidget {
             EasyThrottle.throttle(
               '$deviceId-${connectionState.name}-snackbar',
               const Duration(seconds: 2),
-              () => context.showTextSnackBar(
-                  'Device $deviceId ${connectionState.name}.'),
+              () => context
+                  .showTextSnackBar('Device $deviceId ${connectionState.name}'),
             );
           default:
             break;

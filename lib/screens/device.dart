@@ -1,3 +1,4 @@
+import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,7 +21,35 @@ class DeviceScreen extends ConsumerWidget {
       (label: 'ID', text: device.id),
       (label: 'Name', text: device.name),
       (label: 'RSSI (dBm)', text: device.rssi.toString()),
+      (label: 'Connectable', text: device.connectable.label),
+      (label: 'Manufacturer data', text: device.manufacturerData.toString()),
     ];
+
+    void showServices() {
+      showModalBottomSheet(
+        context: context,
+        showDragHandle: true,
+        builder: (_) {
+          return PaddedColumn(
+            padding: const EdgeInsets.only(bottom: 24),
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Services',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const Divider(),
+              for (final uuid in device.serviceUuids)
+                CopyableListTile(
+                  data: () => uuid.toString(),
+                  title: Text(uuid.toString(), textAlign: TextAlign.center),
+                  visualDensity: VisualDensity.compact,
+                ),
+            ],
+          );
+        },
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -34,6 +63,12 @@ class DeviceScreen extends ConsumerWidget {
               title: Text(record.label),
               subtitle: Text(record.text),
             ),
+          ListTile(
+            title: const Text('Services'),
+            subtitle: Text('${device.serviceUuids.length} service(s)'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: showServices,
+          ),
           const Divider(),
           _ConnectionListTile(device),
         ],
