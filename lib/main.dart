@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'services/router.dart';
+import 'services/settings.dart';
 
-void main() {
+Future<void> main() async {
+  // Initialize Hive.
+  await Future(() async {
+    await Hive.initFlutter();
+
+    // Open boxes.
+    await [
+      Hive.openBox('settings'),
+    ].wait;
+  });
+
   runApp(ProviderScope(
     observers: [_ProviderObserver()],
     child: const MyApp(),
@@ -16,9 +28,11 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final themeMode = ref.watch(currentThemeModeProvider);
 
     return MaterialApp.router(
       title: 'Riverable',
+      themeMode: themeMode,
       theme: ThemeData(
         colorSchemeSeed: Colors.blue,
         useMaterial3: true,

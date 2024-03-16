@@ -38,3 +38,11 @@ extension BuildContextExtension on BuildContext {
         applicationName: 'Riverable',
       );
 }
+
+extension ThemeModeExtension on ThemeMode {
+  String get label => switch (this) {
+        ThemeMode.system => 'System',
+        ThemeMode.light => 'Light',
+        ThemeMode.dark => 'Dark',
+      };
+}
