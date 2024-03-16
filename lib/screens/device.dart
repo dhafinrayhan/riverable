@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/device_state.dart';
 import '../services/ble/device.dart';
 import '../utils/extensions.dart';
+import '../widgets/copyable_list_tile.dart';
 
 class DeviceScreen extends ConsumerWidget {
   const DeviceScreen(this.id, {super.key});
@@ -28,7 +29,8 @@ class DeviceScreen extends ConsumerWidget {
       body: ListView(
         children: [
           for (final record in records)
-            ListTile(
+            CopyableListTile(
+              data: () => record.text,
               title: Text(record.label),
               subtitle: Text(record.text),
             ),

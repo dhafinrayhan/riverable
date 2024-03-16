@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 extension DeviceConnectionStateExtension on DeviceConnectionState {
@@ -31,6 +32,11 @@ extension BuildContextExtension on BuildContext {
         content: Text(text),
         duration: const Duration(seconds: 2),
       ));
+
+  Future<void> copy(String text) async {
+    await Clipboard.setData(ClipboardData(text: text));
+    showTextSnackBar('Copied to clipboard');
+  }
 
   void showAppLicensePage() => showLicensePage(
         context: this,
