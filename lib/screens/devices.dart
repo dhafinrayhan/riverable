@@ -13,8 +13,8 @@ class DevicesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final devices =
-        ref.watch(nearbyDevicesProvider).value?.values.toList() ?? [];
+    final List<DiscoveredDevice> devices =
+        ref.watch(nearbyDevicesProvider).value ?? [];
 
     ref.listen(latestConnectionStateUpdateProvider, (_, connectionStateUpdate) {
       if (connectionStateUpdate.hasValue) {
