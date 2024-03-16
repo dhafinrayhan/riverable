@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'services/ble/characteristics.dart';
 import 'services/router.dart';
 import 'services/settings.dart';
 
@@ -10,8 +11,11 @@ Future<void> main() async {
   await Future(() async {
     await Hive.initFlutter();
 
+    Hive.registerAdapter(HiveQualifiedCharacteristicAdapter());
+
     // Open boxes.
     await [
+      Hive.openBox<HiveQualifiedCharacteristic>('characteristics'),
       Hive.openBox('settings'),
     ].wait;
   });
