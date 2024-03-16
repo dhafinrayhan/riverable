@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'services/ble/characteristics.dart';
 import 'services/ble/devices.dart';
@@ -11,18 +12,30 @@ import 'services/settings.dart';
 import 'utils/extensions.dart';
 
 Future<void> main() async {
-  // Initialize Hive.
-  await Future(() async {
-    await Hive.initFlutter();
+  WidgetsFlutterBinding.ensureInitialized();
 
-    Hive.registerAdapter(HiveQualifiedCharacteristicAdapter());
+  await [
+    // Request permissions.
+    [
+      Permission.bluetoothScan,
+      Permission.bluetoothConnect,
+      Permission.location,
+    ].request(),
 
-    // Open boxes.
-    await [
-      Hive.openBox<HiveQualifiedCharacteristic>('characteristics'),
-      Hive.openBox('settings'),
-    ].wait;
-  });
+    // Initialize Hive.
+    Future(() async {
+      await Hive.initFlutter();
+
+      // Register adapters.
+      Hive.registerAdapter(HiveQualifiedCharacteristicAdapter());
+
+      // Open boxes.
+      await [
+        Hive.openBox<HiveQualifiedCharacteristic>('characteristics'),
+        Hive.openBox('settings'),
+      ].wait;
+    })
+  ].wait;
 
   runApp(ProviderScope(
     observers: [_ProviderObserver()],
