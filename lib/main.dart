@@ -1,10 +1,14 @@
+import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'services/ble/characteristics.dart';
+import 'services/ble/devices.dart';
 import 'services/router.dart';
 import 'services/settings.dart';
+import 'utils/extensions.dart';
 
 Future<void> main() async {
   // Initialize Hive.
@@ -22,17 +26,37 @@ Future<void> main() async {
 
   runApp(ProviderScope(
     observers: [_ProviderObserver()],
-    child: const MyApp(),
+    child: const RiverableApp(),
   ));
 }
 
-class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+class RiverableApp extends ConsumerWidget {
+  const RiverableApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final themeMode = ref.watch(currentThemeModeProvider);
+
+    // Show a snackbar when a device is connected/disconnected.
+    ref.listen(latestConnectionStateUpdateProvider, (_, connectionStateUpdate) {
+      if (connectionStateUpdate.hasValue) {
+        final ConnectionStateUpdate(:deviceId, :connectionState) =
+            connectionStateUpdate.requireValue;
+        switch (connectionState) {
+          case DeviceConnectionState.connected:
+          case DeviceConnectionState.disconnected:
+            EasyThrottle.throttle(
+              '$deviceId-${connectionState.name}-snackbar',
+              const Duration(seconds: 2),
+              () => navigatorKey.currentContext?.showTextSnackBar(
+                  'Device $deviceId ${connectionState.name}'),
+            );
+          default:
+            break;
+        }
+      }
+    });
 
     return MaterialApp.router(
       title: 'Riverable',

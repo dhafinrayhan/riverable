@@ -12,6 +12,8 @@ import '../widgets/scaffold_with_nav_bar.dart';
 
 part 'router.g.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 @Riverpod(keepAlive: true)
 GoRouter router(RouterRef ref) {
   final navBarItems = [
@@ -53,6 +55,7 @@ GoRouter router(RouterRef ref) {
   ];
 
   final router = GoRouter(
+    navigatorKey: navigatorKey,
     debugLogDiagnostics: true,
     initialLocation: navBarItems.first.path,
     routes: [

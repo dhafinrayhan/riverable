@@ -29,7 +29,7 @@ Stream<Map<String, DiscoveredDevice>> discoveredDevices(
 }
 
 /// Exposes discovered devices within the RSSI threshold.
-@Riverpod(keepAlive: true)
+@riverpod
 Stream<List<DiscoveredDevice>> nearbyDevices(NearbyDevicesRef ref) async* {
   final sortBasedOnRssi = ref.watch(sortBasedOnRssiProvider);
   // final connectedDevicesOnTop = ref.watch(connectedDevicesOnTopProvider);
