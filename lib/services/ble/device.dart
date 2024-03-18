@@ -15,7 +15,7 @@ class Device extends _$Device {
   @override
   DeviceState build(String id) {
     final DiscoveredDevice device = ref.watch(
-      discoveredDevicesProvider.select((device) => device.requireValue[id]!),
+      discoveredDevicesProvider.select((devices) => devices.requireValue[id]!),
     );
     final DeviceConnectionState connectionState =
         ref.watch(deviceConnectionStateProvider(id)).value ??
