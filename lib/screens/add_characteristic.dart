@@ -14,16 +14,21 @@ class AddCharacteristicScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final nameController = useTextEditingController();
     final characteristicIdController = useTextEditingController();
     final serviceIdController = useTextEditingController();
     final deviceIdController = useTextEditingController();
 
     void addCharacteristic() {
       try {
-        ref.read(characteristicsProvider.notifier).add(QualifiedCharacteristic(
-              characteristicId: Uuid.parse(characteristicIdController.text),
-              serviceId: Uuid.parse(serviceIdController.text),
+        ref
+            .read(characteristicsProvider.notifier)
+            .add(AppQualifiedCharacteristic(
+              characteristicId:
+                  Uuid.parse(characteristicIdController.text).data,
+              serviceId: Uuid.parse(serviceIdController.text).data,
               deviceId: deviceIdController.text,
+              name: nameController.text,
             ));
         context.go('/characteristics');
       } on Exception catch (e) {
@@ -47,6 +52,14 @@ class AddCharacteristicScreen extends HookConsumerWidget {
           separatorBuilder: () => const Gap(16),
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: 'Name',
+                border: OutlineInputBorder(),
+              ),
+              textInputAction: TextInputAction.next,
+            ),
             TextField(
               controller: characteristicIdController,
               decoration: const InputDecoration(

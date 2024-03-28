@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -44,7 +43,7 @@ class _CharacteristicListTile extends StatelessWidget {
     this.onLongPress,
   });
 
-  final QualifiedCharacteristic characteristic;
+  final AppQualifiedCharacteristic characteristic;
   final GestureTapCallback? onTap;
   final GestureLongPressCallback? onLongPress;
 
@@ -53,7 +52,7 @@ class _CharacteristicListTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       onLongPress: onLongPress,
-      title: Text(characteristic.characteristicId.toString()),
+      title: Text(characteristic.name),
     );
   }
 }

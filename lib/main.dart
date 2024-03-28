@@ -15,11 +15,11 @@ Future<void> main() async {
   await Future(() async {
     await Hive.initFlutter();
 
-    Hive.registerAdapter(HiveQualifiedCharacteristicAdapter());
+    Hive.registerAdapter(AppQualifiedCharacteristicAdapter());
 
     // Open boxes.
     await [
-      Hive.openBox<HiveQualifiedCharacteristic>('characteristics'),
+      Hive.openBox<AppQualifiedCharacteristic>('characteristics'),
       Hive.openBox('settings'),
     ].wait;
   });

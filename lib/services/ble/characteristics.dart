@@ -9,17 +9,20 @@ part 'characteristics.g.dart';
 
 @riverpod
 class Characteristics extends _$Characteristics {
-  late final _box = Hive.box<HiveQualifiedCharacteristic>('characteristics');
+  late final _box = Hive.box<AppQualifiedCharacteristic>('characteristics');
 
   @override
-  List<QualifiedCharacteristic> build() {
-    return [for (final c in _box.values) c.toQualifiedCharacteristic()];
+  List<AppQualifiedCharacteristic> build() {
+    return _box.values.toList();
   }
 
-  void add(QualifiedCharacteristic characteristic) {
-    _box.add(
-      HiveQualifiedCharacteristic.fromQualifiedCharacteristic(characteristic),
-    );
+  void add(AppQualifiedCharacteristic characteristic) {
+    _box.add(characteristic);
+    ref.invalidateSelf();
+  }
+
+  void editAt(int index, AppQualifiedCharacteristic characteristic) {
+    _box.putAt(index, characteristic);
     ref.invalidateSelf();
   }
 
@@ -31,22 +34,25 @@ class Characteristics extends _$Characteristics {
 
 @freezed
 @HiveType(typeId: 0)
-class HiveQualifiedCharacteristic with _$HiveQualifiedCharacteristic {
-  const factory HiveQualifiedCharacteristic({
+class AppQualifiedCharacteristic with _$AppQualifiedCharacteristic {
+  const factory AppQualifiedCharacteristic({
     @HiveField(0) required Uint8List characteristicId,
     @HiveField(1) required Uint8List serviceId,
     @HiveField(2) required String deviceId,
-  }) = _HiveQualifiedCharacteristic;
+    @HiveField(3) @Default('') final String name,
+  }) = _AppQualifiedCharacteristic;
 
-  const HiveQualifiedCharacteristic._();
+  const AppQualifiedCharacteristic._();
 
-  static HiveQualifiedCharacteristic fromQualifiedCharacteristic(
-    QualifiedCharacteristic characteristic,
-  ) =>
-      HiveQualifiedCharacteristic(
+  static AppQualifiedCharacteristic fromQualifiedCharacteristic(
+    QualifiedCharacteristic characteristic, {
+    String name = '',
+  }) =>
+      AppQualifiedCharacteristic(
         characteristicId: characteristic.characteristicId.data,
         serviceId: characteristic.serviceId.data,
         deviceId: characteristic.deviceId,
+        name: name,
       );
 
   QualifiedCharacteristic toQualifiedCharacteristic() =>
@@ -55,4 +61,14 @@ class HiveQualifiedCharacteristic with _$HiveQualifiedCharacteristic {
         serviceId: Uuid(serviceId),
         deviceId: deviceId,
       );
+}
+
+extension AppQualifiedCharacteristicX on AppQualifiedCharacteristic {
+  String get shortCharacteristicId => characteristicId.toShortString();
+  String get shortServiceId => serviceId.toShortString();
+  String get shortDeviceId => deviceId.substring(12);
+}
+
+extension on Uint8List {
+  String toShortString() => Uuid(this).toString().split('-').first;
 }
