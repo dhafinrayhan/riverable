@@ -9,7 +9,7 @@ part 'characteristics.g.dart';
 
 @riverpod
 class Characteristics extends _$Characteristics {
-  final _box = Hive.box<HiveQualifiedCharacteristic>('characteristics');
+  late final _box = Hive.box<HiveQualifiedCharacteristic>('characteristics');
 
   @override
   List<QualifiedCharacteristic> build() {
