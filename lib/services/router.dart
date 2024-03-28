@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../screens/add_characteristic.dart';
-import '../screens/characteristics.dart';
 import '../screens/device.dart';
 import '../screens/devices.dart';
 import '../screens/settings.dart';
@@ -28,20 +26,6 @@ GoRouter router(RouterRef ref) {
           builder: (_, state) {
             final id = state.pathParameters['id']!;
             return DeviceScreen(id);
-          },
-        ),
-      ],
-    ),
-    NavBarItem(
-      path: '/characteristics',
-      widget: const CharacteristicsScreen(),
-      icon: Icons.pin,
-      label: 'Characteristics',
-      routes: [
-        GoRoute(
-          path: 'add',
-          builder: (_, __) {
-            return const AddCharacteristicScreen();
           },
         ),
       ],
