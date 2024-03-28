@@ -34,11 +34,13 @@ class Device extends _$Device {
   }
 
   void connect() {
-    ref.read(deviceConnectionProvider(id).notifier).connect();
+    ref.read(deviceConnectionSubscriptionProvider(id).notifier).connect();
   }
 
   Future<void> disconnect() async {
-    await ref.read(deviceConnectionProvider(id).notifier).disconnect();
+    await ref
+        .read(deviceConnectionSubscriptionProvider(id).notifier)
+        .disconnect();
   }
 }
 
@@ -61,7 +63,7 @@ Stream<DeviceConnectionState> deviceConnectionState(
 /// A notifier that acts as a singleton for the connection stream subscription
 /// of a specific device.
 @Riverpod(keepAlive: true)
-class DeviceConnection extends _$DeviceConnection {
+class DeviceConnectionSubscription extends _$DeviceConnectionSubscription {
   @override
   StreamSubscription<ConnectionStateUpdate>? build(String id) => null;
 
