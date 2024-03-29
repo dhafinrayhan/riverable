@@ -17,7 +17,8 @@ GoRouter router(RouterRef ref) {
     NavigationItem(
       path: '/devices',
       body: (_) => const DevicesScreen(),
-      icon: Icons.bluetooth,
+      icon: Icons.bluetooth_searching_outlined,
+      selectedIcon: Icons.bluetooth_searching,
       label: 'Devices',
       routes: [
         GoRoute(
@@ -32,7 +33,8 @@ GoRouter router(RouterRef ref) {
     NavigationItem(
       path: '/settings',
       body: (_) => const SettingsScreen(),
-      icon: Icons.settings,
+      icon: Icons.settings_outlined,
+      selectedIcon: Icons.settings,
       label: 'Settings',
     ),
   ];
