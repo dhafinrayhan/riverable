@@ -104,7 +104,6 @@ class _AddCharacteristicDialog extends HookConsumerWidget {
               controller: nameController,
               decoration: const InputDecoration(
                 labelText: 'Name',
-                border: OutlineInputBorder(),
                 isDense: true,
               ),
               textInputAction: TextInputAction.next,
@@ -113,7 +112,6 @@ class _AddCharacteristicDialog extends HookConsumerWidget {
               controller: characteristicIdController,
               decoration: const InputDecoration(
                 labelText: 'Characteristic ID',
-                border: OutlineInputBorder(),
                 isDense: true,
               ),
               textInputAction: TextInputAction.next,
@@ -122,7 +120,6 @@ class _AddCharacteristicDialog extends HookConsumerWidget {
               controller: serviceIdController,
               decoration: const InputDecoration(
                 labelText: 'Service ID',
-                border: OutlineInputBorder(),
                 isDense: true,
               ),
               textInputAction: TextInputAction.next,
@@ -131,7 +128,6 @@ class _AddCharacteristicDialog extends HookConsumerWidget {
               controller: deviceIdController,
               decoration: const InputDecoration(
                 labelText: 'Device ID',
-                border: OutlineInputBorder(),
                 isDense: true,
               ),
               textInputAction: TextInputAction.done,
@@ -238,7 +234,6 @@ class _EditCharacteristicDialog extends HookConsumerWidget {
               controller: nameController,
               decoration: const InputDecoration(
                 labelText: 'Name',
-                border: OutlineInputBorder(),
                 isDense: true,
               ),
               textInputAction: TextInputAction.next,
@@ -247,7 +242,6 @@ class _EditCharacteristicDialog extends HookConsumerWidget {
               controller: characteristicIdController,
               decoration: const InputDecoration(
                 labelText: 'Characteristic ID',
-                border: OutlineInputBorder(),
                 isDense: true,
               ),
               textInputAction: TextInputAction.next,
@@ -256,7 +250,6 @@ class _EditCharacteristicDialog extends HookConsumerWidget {
               controller: serviceIdController,
               decoration: const InputDecoration(
                 labelText: 'Service ID',
-                border: OutlineInputBorder(),
                 isDense: true,
               ),
               textInputAction: TextInputAction.next,
@@ -265,7 +258,6 @@ class _EditCharacteristicDialog extends HookConsumerWidget {
               controller: deviceIdController,
               decoration: const InputDecoration(
                 labelText: 'Device ID',
-                border: OutlineInputBorder(),
                 isDense: true,
               ),
               textInputAction: TextInputAction.done,

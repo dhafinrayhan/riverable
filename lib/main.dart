@@ -9,6 +9,7 @@ import 'services/ble/devices.dart';
 import 'services/router.dart';
 import 'services/settings.dart';
 import 'utils/extensions.dart';
+import 'utils/methods.dart';
 
 Future<void> main() async {
   // Initialize Hive.
@@ -58,18 +59,21 @@ class RiverableApp extends ConsumerWidget {
       }
     });
 
+    final (lightTheme, darkTheme) = createDualThemeData(
+      seedColor: Colors.blue,
+      useMaterial3: true,
+      transformer: (themeData) => themeData.copyWith(
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(),
+        ),
+      ),
+    );
+
     return MaterialApp.router(
       title: 'Riverable',
       themeMode: themeMode,
-      theme: ThemeData(
-        colorSchemeSeed: Colors.blue,
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorSchemeSeed: Colors.blue,
-        useMaterial3: true,
-        brightness: Brightness.dark,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       routerConfig: router,
     );
   }
