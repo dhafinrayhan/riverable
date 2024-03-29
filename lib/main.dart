@@ -10,6 +10,7 @@ import 'services/router.dart';
 import 'services/settings.dart';
 import 'utils/extensions.dart';
 import 'utils/methods.dart';
+import 'utils/provider_observer.dart';
 
 Future<void> main() async {
   // Initialize Hive.
@@ -26,7 +27,7 @@ Future<void> main() async {
   });
 
   runApp(ProviderScope(
-    observers: [_ProviderObserver()],
+    observers: [AppProviderObserver()],
     child: const RiverableApp(),
   ));
 }
@@ -76,44 +77,5 @@ class RiverableApp extends ConsumerWidget {
       darkTheme: darkTheme,
       routerConfig: router,
     );
-  }
-}
-
-class _ProviderObserver extends ProviderObserver {
-  @override
-  void didAddProvider(
-    ProviderBase<Object?> provider,
-    Object? value,
-    ProviderContainer container,
-  ) {
-    debugPrint('Provider $provider was initialized with $value');
-  }
-
-  @override
-  void didDisposeProvider(
-    ProviderBase<Object?> provider,
-    ProviderContainer container,
-  ) {
-    debugPrint('Provider $provider was disposed');
-  }
-
-  @override
-  void didUpdateProvider(
-    ProviderBase<Object?> provider,
-    Object? previousValue,
-    Object? newValue,
-    ProviderContainer container,
-  ) {
-    debugPrint('Provider $provider updated from $previousValue to $newValue');
-  }
-
-  @override
-  void providerDidFail(
-    ProviderBase<Object?> provider,
-    Object error,
-    StackTrace stackTrace,
-    ProviderContainer container,
-  ) {
-    debugPrint('Provider $provider threw $error at $stackTrace');
   }
 }
