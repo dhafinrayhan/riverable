@@ -175,11 +175,7 @@ class _CharacteristicListTile extends StatelessWidget {
       onTap: onTap,
       title: Text(characteristic.name),
       subtitle: Text(
-        '${characteristic.shortCharacteristicId}'
-        ' • '
-        '${characteristic.shortServiceId}'
-        ' • '
-        '${characteristic.shortDeviceId}',
+        characteristic.shortDescription,
       ),
       trailing: IconButton(
         onPressed: editCharacteristic,

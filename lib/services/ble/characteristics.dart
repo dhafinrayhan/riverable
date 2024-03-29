@@ -67,6 +67,8 @@ extension AppQualifiedCharacteristicX on AppQualifiedCharacteristic {
   String get shortCharacteristicId => characteristicId.toShortString();
   String get shortServiceId => serviceId.toShortString();
   String get shortDeviceId => deviceId.substring(12);
+  String get shortDescription =>
+      [shortCharacteristicId, shortServiceId, shortDeviceId].join(' • ');
 }
 
 extension on Uint8List {

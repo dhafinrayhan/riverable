@@ -2,6 +2,21 @@ import 'package:flutter/material.dart';
 
 import '../utils/extensions.dart';
 
+class TitleListTile extends StatelessWidget {
+  const TitleListTile(this.text, {super.key});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(text),
+      titleTextStyle: Theme.of(context).textTheme.labelSmall,
+      dense: true,
+    );
+  }
+}
+
 class CopyableListTile extends StatelessWidget {
   const CopyableListTile({
     super.key,
