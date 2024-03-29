@@ -150,6 +150,7 @@ class _WriteSection extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final characteristic = useState<AppQualifiedCharacteristic?>(null);
     final isWithResponse = useState(true);
+    final valueController = useTextEditingController(text: '0');
 
     Future<void> selectCharacteristic() async {
       final selectedCharacteristic =
@@ -167,7 +168,7 @@ class _WriteSection extends HookConsumerWidget {
 
       ref.read(deviceProvider(device.id).notifier).write(
         characteristic.value!,
-        value: [0x00],
+        value: [for (final e in valueController.text.split(',')) int.parse(e)],
       );
     }
 
@@ -183,6 +184,17 @@ class _WriteSection extends HookConsumerWidget {
                 : 'Select a characteristic',
           ),
           trailing: const Icon(Icons.chevron_right),
+        ),
+        ListTile(
+          title: const Text('Value'),
+          subtitle: TextField(
+            controller: valueController,
+            decoration: const InputDecoration(
+              helperText: 'Example: 12,34,56,78',
+              border: UnderlineInputBorder(),
+              isDense: true,
+            ),
+          ),
         ),
         SwitchListTile(
           value: isWithResponse.value,
