@@ -47,7 +47,7 @@ class _CharacteristicsSheet extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'Characteristics',
+          selectable ? 'Select characteristic' : 'Characteristics',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const Divider(),
