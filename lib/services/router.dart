@@ -5,8 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../screens/device.dart';
 import '../screens/devices.dart';
 import '../screens/settings.dart';
-import '../widgets/models/nav_bar_item.dart';
-import '../widgets/scaffold_with_nav_bar.dart';
+import '../widgets/scaffold_with_navigation.dart';
 
 part 'router.g.dart';
 
@@ -14,10 +13,10 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 @Riverpod(keepAlive: true)
 GoRouter router(RouterRef ref) {
-  final navBarItems = [
-    NavBarItem(
+  final navigationItems = [
+    NavigationItem(
       path: '/devices',
-      widget: const DevicesScreen(),
+      body: (_) => const DevicesScreen(),
       icon: Icons.bluetooth,
       label: 'Devices',
       routes: [
@@ -30,9 +29,9 @@ GoRouter router(RouterRef ref) {
         ),
       ],
     ),
-    NavBarItem(
+    NavigationItem(
       path: '/settings',
-      widget: const SettingsScreen(),
+      body: (_) => const SettingsScreen(),
       icon: Icons.settings,
       label: 'Settings',
     ),
@@ -41,22 +40,22 @@ GoRouter router(RouterRef ref) {
   final router = GoRouter(
     navigatorKey: navigatorKey,
     debugLogDiagnostics: true,
-    initialLocation: navBarItems.first.path,
+    initialLocation: navigationItems.first.path,
     routes: [
       // Configuration for the bottom navigation bar routes. The routes
-      // themselves should be defined in [navBarItems].
+      // themselves should be defined in [navigationItems].
       ShellRoute(
-        builder: (_, state, child) => ScaffoldWithNavBar(
+        builder: (_, state, child) => ScaffoldWithNavigation(
           currentPath: state.uri.path,
-          navBarItems: navBarItems,
+          navigationItems: navigationItems,
           child: child,
         ),
         routes: [
-          for (final item in navBarItems)
+          for (final item in navigationItems)
             GoRoute(
               path: item.path,
-              pageBuilder: (_, __) => CustomTransitionPage(
-                child: item.widget,
+              pageBuilder: (context, __) => CustomTransitionPage(
+                child: item.body(context),
                 transitionsBuilder: (_, animation, __, child) {
                   return FadeTransition(
                     opacity: animation.drive(CurveTween(curve: Curves.ease)),
