@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../services/ble/device.dart';
 import '../services/ble/devices.dart';
-import '../utils/characteristics_sheet.dart';
 import '../utils/extensions.dart';
 
 class DevicesScreen extends ConsumerWidget {
@@ -26,11 +25,6 @@ class DevicesScreen extends ConsumerWidget {
           final id = devices[index].id;
           return _DeviceListTile(id);
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            showCharacteristicsSheet(context, useRootNavigator: true),
-        child: const Icon(Icons.pin),
       ),
     );
   }
