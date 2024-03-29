@@ -28,7 +28,8 @@ class DevicesScreen extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showCharacteristicsSheet(context),
+        onPressed: () =>
+            showCharacteristicsSheet(context, useRootNavigator: true),
         child: const Icon(Icons.pin),
       ),
     );

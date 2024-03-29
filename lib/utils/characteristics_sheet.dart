@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../services/ble/characteristics.dart';
@@ -12,10 +11,11 @@ import 'extensions.dart';
 Future<AppQualifiedCharacteristic?> showCharacteristicsSheet(
   BuildContext context, {
   bool selectable = false,
+  bool useRootNavigator = false,
 }) {
   return showModalBottomSheet<AppQualifiedCharacteristic?>(
     context: context,
-    useRootNavigator: true,
+    useRootNavigator: useRootNavigator,
     showDragHandle: true,
     builder: (_) {
       return _CharacteristicsSheet(selectable: selectable);
@@ -35,6 +35,7 @@ class _CharacteristicsSheet extends ConsumerWidget {
     void addCharacteristic() {
       showDialog(
         context: context,
+        useRootNavigator: false,
         builder: ((context) {
           return const _AddCharacteristicDialog();
         }),
@@ -54,7 +55,9 @@ class _CharacteristicsSheet extends ConsumerWidget {
           _CharacteristicListTile(
             index,
             characteristic,
-            onTap: selectable ? () => context.pop(characteristic) : null,
+            onTap: selectable
+                ? () => Navigator.of(context).pop(characteristic)
+                : null,
           ),
         ListTile(
           onTap: addCharacteristic,
@@ -87,7 +90,7 @@ class _AddCharacteristicDialog extends HookConsumerWidget {
               deviceId: deviceIdController.text,
               name: nameController.text,
             ));
-        context.pop();
+        Navigator.of(context).pop();
       } on Exception catch (e) {
         context.showTextSnackBar(e.toString());
       }
@@ -137,7 +140,7 @@ class _AddCharacteristicDialog extends HookConsumerWidget {
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: () => context.pop(),
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
         TextButton(
@@ -161,6 +164,7 @@ class _CharacteristicListTile extends StatelessWidget {
     void editCharacteristic() {
       showDialog(
         context: context,
+        useRootNavigator: false,
         builder: ((context) {
           return _EditCharacteristicDialog(index, characteristic);
         }),
@@ -212,7 +216,7 @@ class _EditCharacteristicDialog extends HookConsumerWidget {
               deviceId: deviceIdController.text,
               name: nameController.text,
             ));
-        context.pop();
+        Navigator.of(context).pop();
       } on Exception catch (e) {
         context.showTextSnackBar(e.toString());
       }
@@ -220,7 +224,7 @@ class _EditCharacteristicDialog extends HookConsumerWidget {
 
     void deleteCharacteristic() {
       ref.read(characteristicsProvider.notifier).deleteAt(index);
-      context.pop();
+      Navigator.of(context).pop();
     }
 
     return AlertDialog(
@@ -274,7 +278,7 @@ class _EditCharacteristicDialog extends HookConsumerWidget {
           ),
         ),
         TextButton(
-          onPressed: () => context.pop(),
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
         TextButton(
