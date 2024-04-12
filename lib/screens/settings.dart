@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../services/ble/characteristics.dart';
 import '../services/settings.dart';
+import '../utils/characteristics_sheet.dart';
 import '../utils/extensions.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -22,14 +23,31 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: const [
-          _SortBasedOnRssi(),
-          _ConnectedDevicesOnTop(),
+          _SortBasedOnRssiListTile(),
+          _ConnectedDevicesOnTopListTile(),
+          _CharacteristicsListTile(),
           Divider(),
           _RssiThresholdListTile(),
           Divider(),
           _ThemeModeListTile(),
         ],
       ),
+    );
+  }
+}
+
+class _CharacteristicsListTile extends ConsumerWidget {
+  const _CharacteristicsListTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final characteristics = ref.watch(characteristicsProvider);
+
+    return ListTile(
+      onTap: () => showCharacteristicsSheet(context, useRootNavigator: true),
+      title: const Text('Characteristics'),
+      subtitle: Text('${characteristics.length} saved characteristic(s)'),
+      trailing: const Icon(Icons.chevron_right),
     );
   }
 }
@@ -60,8 +78,8 @@ class _RssiThresholdListTile extends ConsumerWidget {
   }
 }
 
-class _SortBasedOnRssi extends ConsumerWidget {
-  const _SortBasedOnRssi();
+class _SortBasedOnRssiListTile extends ConsumerWidget {
+  const _SortBasedOnRssiListTile();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,8 +94,8 @@ class _SortBasedOnRssi extends ConsumerWidget {
   }
 }
 
-class _ConnectedDevicesOnTop extends ConsumerWidget {
-  const _ConnectedDevicesOnTop();
+class _ConnectedDevicesOnTopListTile extends ConsumerWidget {
+  const _ConnectedDevicesOnTopListTile();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -124,7 +142,7 @@ class _ThemeModeDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     void setThemeMode(ThemeMode themeMode) {
       ref.read(currentThemeModeProvider.notifier).set(themeMode);
-      context.pop();
+      Navigator.of(context).pop();
     }
 
     return SimpleDialog(

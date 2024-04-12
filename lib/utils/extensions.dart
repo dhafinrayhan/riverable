@@ -13,7 +13,7 @@ extension DeviceConnectionStateExtension on DeviceConnectionState {
   Icon iconOf(BuildContext context) => switch (this) {
         DeviceConnectionState.connected => Icon(
             Icons.sensors,
-            color: Theme.of(context).colorScheme.primary,
+            color: context.colorScheme.primary,
           ),
         DeviceConnectionState.disconnected => const Icon(Icons.sensors_off),
         _ => const Icon(Icons.sensors),
@@ -29,7 +29,17 @@ extension ConnectableExtension on Connectable {
 }
 
 extension BuildContextExtension on BuildContext {
+  /// A convenient way to access [ThemeData.colorScheme] of the current context.
+  ///
+  /// This also prevents confusion with a bunch of other properties of [ThemeData]
+  /// that are less commonly used.
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
+
+  /// A convenient way to access [ThemeData.textTheme] of the current context.
+  ///
+  /// This also prevents confusion with a bunch of other properties of [ThemeData]
+  /// that are less commonly used.
+  TextTheme get textTheme => Theme.of(this).textTheme;
 
   /// Shows a floating snack bar with text as its content.
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showTextSnackBar(

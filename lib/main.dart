@@ -10,6 +10,8 @@ import 'services/ble/devices.dart';
 import 'services/router.dart';
 import 'services/settings.dart';
 import 'utils/extensions.dart';
+import 'utils/methods.dart';
+import 'utils/provider_observer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,18 +29,18 @@ Future<void> main() async {
       await Hive.initFlutter();
 
       // Register adapters.
-      Hive.registerAdapter(HiveQualifiedCharacteristicAdapter());
+      Hive.registerAdapter(AppQualifiedCharacteristicAdapter());
 
       // Open boxes.
       await [
-        Hive.openBox<HiveQualifiedCharacteristic>('characteristics'),
+        Hive.openBox<AppQualifiedCharacteristic>('characteristics'),
         Hive.openBox('settings'),
       ].wait;
-    })
+    }),
   ].wait;
 
   runApp(ProviderScope(
-    observers: [_ProviderObserver()],
+    observers: [AppProviderObserver()],
     child: const RiverableApp(),
   ));
 }
@@ -71,58 +73,22 @@ class RiverableApp extends ConsumerWidget {
       }
     });
 
+    final (lightTheme, darkTheme) = createDualThemeData(
+      seedColor: Colors.blue,
+      useMaterial3: true,
+      transformer: (themeData) => themeData.copyWith(
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(),
+        ),
+      ),
+    );
+
     return MaterialApp.router(
       title: 'Riverable',
       themeMode: themeMode,
-      theme: ThemeData(
-        colorSchemeSeed: Colors.blue,
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorSchemeSeed: Colors.blue,
-        useMaterial3: true,
-        brightness: Brightness.dark,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       routerConfig: router,
     );
-  }
-}
-
-class _ProviderObserver extends ProviderObserver {
-  @override
-  void didAddProvider(
-    ProviderBase<Object?> provider,
-    Object? value,
-    ProviderContainer container,
-  ) {
-    debugPrint('Provider $provider was initialized with $value');
-  }
-
-  @override
-  void didDisposeProvider(
-    ProviderBase<Object?> provider,
-    ProviderContainer container,
-  ) {
-    debugPrint('Provider $provider was disposed');
-  }
-
-  @override
-  void didUpdateProvider(
-    ProviderBase<Object?> provider,
-    Object? previousValue,
-    Object? newValue,
-    ProviderContainer container,
-  ) {
-    debugPrint('Provider $provider updated from $previousValue to $newValue');
-  }
-
-  @override
-  void providerDidFail(
-    ProviderBase<Object?> provider,
-    Object error,
-    StackTrace stackTrace,
-    ProviderContainer container,
-  ) {
-    debugPrint('Provider $provider threw $error at $stackTrace');
   }
 }

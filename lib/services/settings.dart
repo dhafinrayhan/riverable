@@ -6,7 +6,7 @@ part 'settings.g.dart';
 
 @Riverpod(keepAlive: true)
 class RssiThreshold extends _$RssiThreshold {
-  final _box = Hive.box('settings');
+  late final _box = Hive.box('settings');
 
   @override
   int build() {
@@ -26,7 +26,7 @@ class RssiThreshold extends _$RssiThreshold {
 /// and defaults to [ThemeMode.system] if the theme mode was not set before.
 @Riverpod(keepAlive: true)
 class CurrentThemeMode extends _$CurrentThemeMode {
-  final _box = Hive.box('settings');
+  late final _box = Hive.box('settings');
 
   @override
   ThemeMode build() {
@@ -51,7 +51,7 @@ class CurrentThemeMode extends _$CurrentThemeMode {
 
 @Riverpod(keepAlive: true)
 class SortBasedOnRssi extends _$SortBasedOnRssi {
-  final _box = Hive.box('settings');
+  late final _box = Hive.box('settings');
 
   @override
   bool build() {
@@ -67,7 +67,7 @@ class SortBasedOnRssi extends _$SortBasedOnRssi {
 
 @Riverpod(keepAlive: true)
 class ConnectedDevicesOnTop extends _$ConnectedDevicesOnTop {
-  final _box = Hive.box('settings');
+  late final _box = Hive.box('settings');
 
   @override
   bool build() {

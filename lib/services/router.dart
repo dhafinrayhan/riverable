@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../screens/add_characteristic.dart';
-import '../screens/characteristics.dart';
 import '../screens/device.dart';
 import '../screens/devices.dart';
 import '../screens/settings.dart';
-import '../widgets/models/nav_bar_item.dart';
-import '../widgets/scaffold_with_nav_bar.dart';
+import '../widgets/scaffold_with_navigation.dart';
 
 part 'router.g.dart';
 
@@ -16,11 +13,12 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 @Riverpod(keepAlive: true)
 GoRouter router(RouterRef ref) {
-  final navBarItems = [
-    NavBarItem(
+  final navigationItems = [
+    NavigationItem(
       path: '/devices',
-      widget: const DevicesScreen(),
-      icon: Icons.bluetooth,
+      body: (_) => const DevicesScreen(),
+      icon: Icons.bluetooth_searching_outlined,
+      selectedIcon: Icons.bluetooth_searching,
       label: 'Devices',
       routes: [
         GoRoute(
@@ -32,24 +30,11 @@ GoRouter router(RouterRef ref) {
         ),
       ],
     ),
-    NavBarItem(
-      path: '/characteristics',
-      widget: const CharacteristicsScreen(),
-      icon: Icons.pin,
-      label: 'Characteristics',
-      routes: [
-        GoRoute(
-          path: 'add',
-          builder: (_, __) {
-            return const AddCharacteristicScreen();
-          },
-        ),
-      ],
-    ),
-    NavBarItem(
+    NavigationItem(
       path: '/settings',
-      widget: const SettingsScreen(),
-      icon: Icons.settings,
+      body: (_) => const SettingsScreen(),
+      icon: Icons.settings_outlined,
+      selectedIcon: Icons.settings,
       label: 'Settings',
     ),
   ];
@@ -57,22 +42,22 @@ GoRouter router(RouterRef ref) {
   final router = GoRouter(
     navigatorKey: navigatorKey,
     debugLogDiagnostics: true,
-    initialLocation: navBarItems.first.path,
+    initialLocation: navigationItems.first.path,
     routes: [
       // Configuration for the bottom navigation bar routes. The routes
-      // themselves should be defined in [navBarItems].
+      // themselves should be defined in [navigationItems].
       ShellRoute(
-        builder: (_, state, child) => ScaffoldWithNavBar(
+        builder: (_, state, child) => ScaffoldWithNavigation(
           currentPath: state.uri.path,
-          navBarItems: navBarItems,
+          navigationItems: navigationItems,
           child: child,
         ),
         routes: [
-          for (final item in navBarItems)
+          for (final item in navigationItems)
             GoRoute(
               path: item.path,
-              pageBuilder: (_, __) => CustomTransitionPage(
-                child: item.widget,
+              pageBuilder: (context, __) => CustomTransitionPage(
+                child: item.body(context),
                 transitionsBuilder: (_, animation, __, child) {
                   return FadeTransition(
                     opacity: animation.drive(CurveTween(curve: Curves.ease)),
