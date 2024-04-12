@@ -15,6 +15,11 @@ FlutterReactiveBle ble(BleRef ref) => FlutterReactiveBle();
 @Riverpod(keepAlive: true)
 Stream<Map<String, DiscoveredDevice>> discoveredDevices(
     DiscoveredDevicesRef ref) async* {
+  final ble = ref.watch(bleProvider);
+  if (ble.status != BleStatus.ready) {
+    await ble.statusStream.firstWhere((status) => status == BleStatus.ready);
+  }
+
   final devices = <String, DiscoveredDevice>{};
   yield devices;
 
